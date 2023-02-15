@@ -1,0 +1,20 @@
+# attrgetter usado para iterar sobre dados cruzados com objetos de uma classe
+
+from operator import attrgetter
+
+class Pessoa(object):
+    def __init__(self, nome, telefone, renda):
+        self.nome = nome
+        self.telefone = telefone
+        self.renda = renda
+    
+    def __repr__(self):
+        return self.nome
+
+clientes = [Pessoa('Fernando', 991357258, 3000),
+            Pessoa('Ana', 984351556, 1500),
+            Pessoa('Paulo', 999117643, 3200),
+            Pessoa('Tatiana', 995591127, 3200)]
+
+clientes.sort(key = attrgetter('nome'))
+print(clientes)
