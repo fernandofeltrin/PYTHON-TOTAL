@@ -1,0 +1,28 @@
+# Utilizando o contador do sistema
+from itertools import count
+contador = count()
+
+for numero in contador:
+  print(numero)
+  if numero >= 10:
+    break
+    
+
+# Contando dentro de um intervalo personalizado
+from itertools import count
+contador = count(start = 40)
+
+for numero in contador:
+  print(numero)
+  if numero >= 50:
+    break
+
+# Personalizando de quantos em quantos números o contador irá trabalhar
+from itertools import count
+contador = count(start = 0, step = 2)
+
+for numero in contador:
+  print(numero)
+  if numero >= 20:
+    break
+    
