@@ -1,0 +1,17 @@
+# itemgetter usado para iterar sobre listas e dicionários
+
+from operator import itemgetter
+
+clientes = [{'Nome': 'Fernando', 'Telefone': '991357258', 'Renda': '2000'},
+            {'Nome': 'Ana', 'Telefone': '984351558', 'Renda': '1500'},
+            {'Nome': 'Paulo', 'Telefone': '999117643', 'Renda': '3200'},
+            {'Nome': 'Tatiana', 'Telefone': '995591127', 'Renda': '3200'}]
+
+print(clientes)
+
+nomes = itemgetter('Nome')
+telefones = itemgetter('Telefone')
+rendas = itemgetter('Renda')
+
+clientes.sort(key = nomes)
+print(clientes) # Reordenará os elementos da lista em ordem alfabética dos nomes
