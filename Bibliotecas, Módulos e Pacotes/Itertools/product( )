@@ -1,0 +1,18 @@
+from itertools import product
+
+lista10 = ['Ana', 'Bianca', 'Carla', 'Daniela', 'Franciele', 'Maria']
+
+for combinacoes in product(lista10, repeat = 2):
+  # possíveis combinações de elementos separados em grupos de 2
+  print(combinacoes)
+
+# Parecido com Permutations, mas aqui é permitido que um elemento se combine com ele mesmo.
+
+#############################
+from itertools import product
+
+produto = product([1, 2], [3, 4])
+
+print(list(produto))
+# Irá retornar uma lista onde cada elemento de cada lista é combinado
+# por cada elemento da outra. Ex: 1 e 3, 1 e 4, 2 e 3, 2 e 4.
