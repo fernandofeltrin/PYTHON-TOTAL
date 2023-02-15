@@ -1,0 +1,8 @@
+# Importação Específica e Programada
+import importlib
+
+gerador = importlib.import_module("random")
+
+gerador = gerador.randint(0,10)
+
+print(gerador)
