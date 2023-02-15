@@ -1,0 +1,21 @@
+# Unindo listas de diferentes tamanhos
+from itertools import zip_longest
+
+cidades = ['Porto Alegre', 'Curitiba',
+           'Salvador', 'Belo Horizonte',
+           'Rio de Janeiro', 'Goiânia']
+
+estados = ['RS', 'PR', 'BH', 'MG']
+
+cidades_estados = zip_longest(cidades, estados)
+
+cidades_estados2 = zip_longest(cidades,
+                               estados,
+                               fillvalue = 'Desconhecido')
+
+for i in cidades_estados:
+  print(i)
+
+for j in cidades_estados2:
+  print(j)
+ 
