@@ -1,0 +1,10 @@
+from importlib import reload
+import math
+
+math.pi = 3
+pi = math.pi
+print(pi) # Irá retornar 3, pois foi definido um valor manualmente
+
+reload(math)
+pi2 = math.pi
+print(pi2) # Irá retornar 3.141592653589793 pois o módulo pi foi recarregado e resetado
