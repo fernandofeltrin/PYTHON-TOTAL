@@ -1,0 +1,12 @@
+# Arquivo soma.py
+
+def soma(num1, num2):
+    s = int(num1) + int(num2)
+    return s
+
+# Arquivo index.py
+
+import soma
+
+print(f'O resultado da soma é: {soma.soma(8,3)}')
+
