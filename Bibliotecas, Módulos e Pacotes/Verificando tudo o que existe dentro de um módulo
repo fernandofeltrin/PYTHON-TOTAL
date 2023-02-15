@@ -1,0 +1,4 @@
+dir(random)
+
+# Todas linhas após '__spec__' são os nomes das funções da
+# biblioteca random disponíveis para serem usadas.
