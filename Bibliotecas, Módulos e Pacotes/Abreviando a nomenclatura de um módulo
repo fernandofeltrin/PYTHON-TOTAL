@@ -1,0 +1,5 @@
+import random as ra
+
+for i in range(10):
+  print(ra.randint(1,10))
+  
