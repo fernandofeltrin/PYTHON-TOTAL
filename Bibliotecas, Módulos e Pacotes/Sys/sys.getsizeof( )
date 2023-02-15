@@ -1,0 +1,7 @@
+import sys
+
+lista100 = list(range(101))
+listamilhao = list(range(1000001))
+
+print('Tamanho em bytes:', sys.getsizeof(lista100))
+print('Tamanho em bytes:', sys.getsizeof(listamilhao))
