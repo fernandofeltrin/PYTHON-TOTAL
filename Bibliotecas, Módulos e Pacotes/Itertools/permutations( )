@@ -1,0 +1,19 @@
+from itertools import permutations
+
+lista10 = ['Ana', 'Bianca', 'Carla', 'Daniela', 'Franciele', 'Maria']
+
+for combinacoes in permutations(lista10, 2):
+  # possíveis combinações de elementos em grupos de 2
+  print(combinacoes)
+
+# Neste caso, as combinações podem se repetir, alterando a ordem dos elementos
+# Ex: Ana e Bianca, Bianca e Ana...
+
+##################################
+from itertools import permutations
+
+permuta = permutations([1, 2, 3])
+
+print(list(permuta))
+# Irá retornar as devidas combinações, desde que o mesmo elemento numérico
+# não não se repita em sua posição da tupla gerada.
