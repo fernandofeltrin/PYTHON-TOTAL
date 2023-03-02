@@ -1,0 +1,8 @@
+import torch
+from torch.autograd import Variable
+
+# Criando uma variável de tensor
+x_tensor = torch.tensor([2, 3, 4])
+x_var = Variable(x_tensor, requires_grad=True)
+print(x_var)
+# Saída: tensor([2, 3, 4], requires_grad=True)
