@@ -1,0 +1,11 @@
+import torch
+import numpy as np
+
+# Criando um array NumPy
+a = np.array([[1, 2], [3, 4]])
+
+# Criando um tensor a partir do array NumPy
+x = torch.from_numpy(a)
+print(x)
+# Saída: tensor([[1, 2],
+#                [3, 4]])
