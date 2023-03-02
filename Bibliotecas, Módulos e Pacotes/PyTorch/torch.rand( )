@@ -1,0 +1,8 @@
+import torch
+
+# Criando um tensor 2D com 3 linhas e 4 colunas, preenchido com valores aleatórios de uma distribuição uniforme entre 0 e 1
+x = torch.rand(3, 4)
+print(x)
+# Saída: tensor([[0.3585, 0.4553, 0.1335, 0.2768],
+#                [0.0335, 0.9025, 0.0415, 0.2949],
+#                [0.0722, 0.7901, 0.6384, 0.9244]])
