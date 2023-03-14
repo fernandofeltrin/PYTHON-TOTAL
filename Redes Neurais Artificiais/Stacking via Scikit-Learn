@@ -1,0 +1,48 @@
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import cross_val_predict
+from sklearn.model_selection import KFold
+import numpy as np
+
+# Carregando a base de dados Iris
+iris = load_iris()
+X = iris.data
+y = iris.target
+
+# Dividindo a base de dados em treino e teste
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, shuffle = True, random_state=42)
+
+# Definindo os modelos base
+models = [LogisticRegression(random_state=42),
+          RandomForestClassifier(random_state=42),
+          GaussianNB(),
+          KNeighborsClassifier()]
+
+# Gerando as previsões dos modelos base para a base de treino
+X_train_meta = np.zeros((len(X_train), len(models)))
+for i, model in enumerate(models):
+    y_pred = cross_val_predict(model, X_train, y_train, cv=KFold(n_splits=5, shuffle = True, random_state=42))
+    X_train_meta[:, i] = y_pred
+
+# Treinando o modelo de metapredição
+meta_model = LogisticRegression(random_state=42)
+meta_model.fit(X_train_meta, y_train)
+
+# Gerando as previsões dos modelos base para a base de teste
+X_test_meta = np.zeros((len(X_test), len(models)))
+for i, model in enumerate(models):
+    model.fit(X_train, y_train)
+    y_pred = model.predict(X_test)
+    X_test_meta[:, i] = y_pred
+
+# Gerando a previsão final
+y_pred = meta_model.predict(X_test_meta)
+
+# Calculando a acurácia
+accuracy = accuracy_score(y_test, y_pred)
+print("Acurácia:", accuracy)
