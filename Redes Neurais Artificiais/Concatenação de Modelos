@@ -1,0 +1,48 @@
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.utils import to_categorical
+from tensorflow.keras.layers import Input, Dense, Flatten, Concatenate
+from tensorflow.keras.models import Model
+
+(X_train, y_train), (X_test, y_test) = mnist.load_data()
+
+X_train = X_train.astype('float32') / 255.
+X_test = X_test.astype('float32') / 255.
+y_train = to_categorical(y_train, 10)
+y_test = to_categorical(y_test, 10)
+
+input_1 = Input(shape = (28, 28, 1))
+flatten_1 = Flatten()(input_1)
+hidden_1 = Dense(64, activation = 'relu')(flatten_1)
+output_1 = Dense(10, activation = 'softmax')(hidden_1)
+
+input_2 = Input(shape = (28, 28, 1))
+flatten_2 = Flatten()(input_2)
+hidden_2 = Dense(64, activation = 'relu')(flatten_2)
+output_2 = Dense(10, activation = 'softmax')(hidden_2)
+
+input_3 = Input(shape = (28, 28, 1))
+flatten_3 = Flatten()(input_3)
+hidden_3 = Dense(64, activation = 'relu')(flatten_3)
+output_3 = Dense(10, activation = 'softmax')(hidden_3)
+
+concatenated = Concatenate()([output_1, output_2, output_3])
+final_output = Dense(10, activation = 'softmax')(concatenated)
+
+model = Model(inputs = [input_1, input_2, input_3],
+              outputs = final_output)
+
+print(model.summary())
+
+model.compile(loss = 'categorical_crossentropy',
+              optimizer = 'adam',
+              metrics = ['accuracy'])
+
+X_train = X_train.reshape(-1, 28, 28, 1)
+X_test = X_test.reshape(-1, 28, 28, 1)
+
+model.fit([X_train, X_train, X_train],
+          y_train,
+          epochs = 10,
+          batch_size = 32,
+          validation_data = ([X_test, X_test, X_test],
+                              y_test))
