@@ -1,0 +1,9 @@
+import dataprep.datasets as dpd
+from dataprep.datasets import load_dataset
+from dataprep.eda import create_report
+
+print(dpd.get_dataset_names())
+
+df = load_dataset('iris')
+
+create_report(df).show()
