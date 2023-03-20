@@ -1,0 +1,17 @@
+import pandas as pd
+from tensorflow.keras.datasets import mnist
+from pycaret.classification import *
+
+(X_train, y_train), (X_test, y_test) = mnist.load_data()
+
+df_train = pd.DataFrame(X_train.reshape(-1, 784))
+df_train['label'] = y_train
+
+exp = setup(data = df_train,
+            target = 'label')
+
+model = compare_models()
+
+nova_amostra = pd.DataFrame(X_test.reshape(-1, 784))
+predictions = predict_model(_model, data = nova_amostra)
+print(predictions['Label'])
