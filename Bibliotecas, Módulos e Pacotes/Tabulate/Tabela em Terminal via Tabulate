@@ -1,0 +1,7 @@
+from tabulate import tabulate
+import pandas as pd
+
+df = pd.DataFrame({'Nome': ['Alberto', 'Maria', 'Fernando', 'Tânia'],
+                   'Sobrenome': ['Pereira', 'Silva', 'Feltrin', 'Belomé']})
+
+print(tabulate(df, headers = 'keys', tablefmt = 'psql'))
