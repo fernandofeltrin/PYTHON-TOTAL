@@ -1,0 +1,9 @@
+from tensorflow.keras import backend as K
+
+def loss_media_absoluta(y_true, y_pred):
+    loss = K.abs(y_true - y_pred)
+    return loss
+
+...
+model.compile(optimizer = 'adam',
+              loss = loss_media_absoluta)
