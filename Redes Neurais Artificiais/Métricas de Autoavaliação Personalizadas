@@ -1,0 +1,16 @@
+from tensorflow.keras import backend as K
+
+def loss_media_absoluta(y_true, y_pred):
+    loss = K.abs(y_true - y_pred)
+    return loss
+
+def custom_acc(y_true, y_pred):
+    true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
+    total_positives = K.sum(K.round(K.clip(y_true, 0, 1)))
+    accuracy = true_positives / (total_positives + K.epsilon())
+    return accuracy
+
+...
+model.compile(optimizer = 'adam',
+              loss = loss_media_absoluta,
+              metrics = [custom_acc])
