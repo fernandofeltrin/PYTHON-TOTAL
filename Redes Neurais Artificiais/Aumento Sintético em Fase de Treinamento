@@ -1,0 +1,60 @@
+import tensorflow as tf
+from keras.models import Sequential
+from keras.layers import Dense, Conv2D, MaxPooling2D, Flatten
+from tensorflow.keras.layers import Layer
+
+class DataAugmentationConv(Layer):
+    def __init__(self, filters, kernel_size, strides, padding, **kwargs):
+        super(DataAugmentationConv, self).__init__(**kwargs)
+        self.filters = filters
+        self.kernel_size = kernel_size
+        self.strides = strides
+        self.padding = padding
+
+    def build(self, input_shape):
+        self.conv_weights = self.add_weight(name = 'conv_weights',
+                                             shape = (self.kernel_size,
+                                                      self.kernel_size,
+                                                      input_shape[-1],
+                                                      self.filters),
+                                             initializer = 'glorot_normal',
+                                             trainable = True)
+        self.random_flip = RandomFlip(mode = 'horizontal')
+        self.random_rotation = RandomRotation(factor = 0.05)
+        super(DataAugmentationConv, self).build(input_shape)
+
+    def call(self, x, training=None):
+        if training:
+            x = self.random_flip(x)
+            x = self.random_rotation(x)
+        conv_out = K.conv2d(x, self.conv_weights,
+                            strides=[1, self.strides,
+                                     self.strides, 1],
+                            padding=self.padding)
+        return conv_out
+
+    def compute_output_shape(self, input_shape):
+        output_shape = (input_shape[0],
+                        int((input_shape[1]-self.kernel_size+2*self.padding)/self.strides + 1),
+                        int((input_shape[2]-self.kernel_size+2*self.padding)/self.strides + 1),
+                        self.filters)
+        return output_shape
+
+model = Sequential([
+    Conv2D(filters = 64,
+           kernel_size = 3,
+           activation = 'relu',
+           input_shape = (28, 28, 1)),
+    MaxPooling2D(pool_size = (2, 2)),
+    DataAugmentationConv(filters = 32,
+                         kernel_size = 3,
+                         strides = 1,
+                         padding = 'same',
+                         activation = 'relu')
+    Flatten(),
+    Dense(units = 64,
+          activation = 'relu'),
+    Dense(units = 10,
+          activation = 'softmax')
+])
+
