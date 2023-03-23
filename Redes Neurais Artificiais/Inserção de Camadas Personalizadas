@@ -1,0 +1,52 @@
+import tensorflow as tf
+from keras.models import Sequential
+from keras.layers import Dense, Conv2D, MaxPooling2D, Flatten
+from tensorflow.keras.layers import Layer
+
+class CamadaExt(Layer):
+    def __init__(self, dim_saida, kernel_size = 3, **kwargs):
+        self.dim_saida = dim_saida
+        self.kernel_size = kernel_size
+        super(CamadaExt, self).__init__(**kwargs)
+    
+    def build(self, dim_entrada):
+        self.kernel = self.add_weight(name = 'kernel',
+                                      shape = (self.kernel_size,
+                                               self.kernel_size,
+                                               dim_entrada[-1],
+                                               self.dim_saida),
+                                      initializer = 'uniform',
+                                      trainable = True)
+        super(CamadaExt, self).build(dim_entrada)
+    
+    def call(self, entradas):
+        saidas = tf.nn.conv2d(entradas,
+                              self.kernel,
+                              strides = [1,1,1,1],
+                              padding = 'SAME')
+      return saidas
+
+class CamadaSubpixel(Layer):
+    def __init__(self, fator, **kwargs):
+        super(CamadaSubpixel, self).__init__(**kwargs)
+        self.fator = fator
+
+    def call(self, entradas):
+        return tf.nn.depth_to_space(entradas,
+                                    block_size = self.fator)
+
+model = Sequential([
+    Conv2D(filters = 64,
+           kernel_size = 3,
+           activation = 'relu',
+           input_shape = (28, 28, 1)),
+    MaxPooling2D(pool_size = (2, 2)),
+    CamadaSubpixel(fator = 2),
+    CamadaExt(dim_saida = 32,
+              kernel_size = 5),
+    Flatten(),
+    Dense(units = 64,
+          activation = 'relu'),
+    Dense(units = 10,
+          activation = 'softmax')
+])
