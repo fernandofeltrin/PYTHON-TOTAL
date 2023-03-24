@@ -1,0 +1,24 @@
+from tensorflow.keras.layers import Input, Dense, Lambda
+from tensorflow.keras.models import Model
+from tensorflow.keras.losses import KLDivergence
+from tensorflow.keras.utils import to_categorical
+import numpy as np
+
+x_train = np.random.rand(100, 10)
+y_train = to_categorical(np.random.randint(0, 2,
+                                           size = (100, 1)))
+
+inputs = Input(shape = (10,))
+x = Dense(50, activation = 'relu')(inputs)
+outputs = Dense(2, activation = 'softmax')(x)
+
+model = Model(inputs = inputs,
+              outputs = outputs)
+
+model.compile(optimizer = 'adam',
+              loss = KLDivergence())
+
+model.fit(x_train,
+          y_train,
+          epochs = 10,
+          batch_size = 16)
