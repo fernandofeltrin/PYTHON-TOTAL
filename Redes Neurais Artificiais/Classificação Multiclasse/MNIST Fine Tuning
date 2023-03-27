@@ -1,0 +1,83 @@
+import numpy as np
+from tensorflow import keras
+from keras.datasets import mnist
+from keras.models import Sequential
+from keras.layers import Input, Conv2D, MaxPooling2D, Flatten, Dense
+from keras.utils import to_categorical
+
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+
+x_train = x_train.astype("float32") / 255.0
+x_test = x_test.astype("float32") / 255.0
+
+y_train = to_categorical(y_train, 10)
+y_test = to_categorical(y_test, 10)
+
+x_train = np.expand_dims(x_train, -1)
+x_test = np.expand_dims(x_test, -1)
+
+model = keras.Sequential([
+    Conv2D(filters = 64,
+           kernel_size = (3, 3),
+           strides = (1, 1),
+           padding = 'same',
+           activation = 'relu',
+           input_shape = (28, 28, 1),
+           kernel_initializer = 'he_normal',
+           bias_initializer = 'zeros',
+           kernel_regularizer = regularizers.l2(0.01),
+           bias_regularizer = regularizers.l2(0.01)),
+    BatchNormalization(),
+    MaxPooling2D(pool_size = (2,2)),
+    Dropout(0.25),
+    Conv2D(filters = 256,
+           kernel_size = (3,3),
+           activation = 'relu'),
+    Conv2D(filters = 256,
+           kernel_size = (3,3),
+           activation = 'relu'),
+    BatchNormalization(),
+    MaxPooling2D(pool_size = (2,2)),
+    Dropout(0.25),
+    Conv2D(filters = 256,
+           kernel_size = (3,3),
+           activation = 'relu'),
+    Conv2D(filters = 256,
+           kernel_size = (3,3),
+           activation = 'relu'),
+    BatchNormalization(),
+    Flatten(),
+    Dense(units = 256,
+                activation='relu',
+                input_dim=100,
+                kernel_initializer='glorot_uniform',
+                bias_initializer='zeros',
+                kernel_regularizer=regularizers.l2(0.01),
+                bias_regularizer=regularizers.l2(0.01)),
+    Dropout(0.2),
+    Dense(units = 256,
+          activation = 'relu'),
+    Dense(units = 128,
+          activation = 'relu'),
+    Dense(units = 10,
+          activation = 'softmax')
+])
+
+model.summary()
+
+model.compile(loss = "categorical_crossentropy",
+              optimizer = "adam",
+              metrics = ["accuracy"])
+
+model.fit(x_train,
+          y_train,
+          batch_size = 128,
+          epochs = 100,
+          validation_data = (x_test, y_test))
+
+score = model.evaluate(x_test,
+                       y_test,
+                       verbose = 1)
+
+print("Loss:", score[0])
+print("Accuracy:", score[1])
