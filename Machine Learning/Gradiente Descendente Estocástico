@@ -1,0 +1,24 @@
+from sklearn.linear_model import SGDClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+from sklearn.datasets import fetch_openml
+
+mnist = fetch_openml('mnist_784')
+
+X_train, X_test, y_train, y_test = train_test_split(mnist.data,
+                                                    mnist.target,
+                                                    test_size = 0.2,
+                                                    random_state = 42)
+
+sgd_clf = SGDClassifier(random_state = 42)
+
+sgd_clf.fit(X_train, y_train)
+
+y_pred = sgd_clf.predict(X_test)
+
+accuracy = accuracy_score(y_test, y_pred)
+print('Acurácia: {:.2f}%'.format(accuracy*100))
+
+
+
+
