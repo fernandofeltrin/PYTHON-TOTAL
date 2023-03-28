@@ -1,0 +1,80 @@
+import tensorflow as tf
+from tensorflow.keras import datasets, layers
+from keras.models import Model
+from keras.layers import Dense, Conv2D, BatchNormalization, Activation, Flatten, Input
+
+# Carregando os dados
+(train_images, train_labels), (test_images, test_labels) = datasets.mnist.load_data()
+
+# Normalizando os dados
+train_images = train_images.astype('float32') / 255.0
+test_images = test_images.astype('float32') / 255.0
+
+# Adicionando uma dimensão para os canais de cores (1 no caso do MNIST)
+train_images = train_images[..., tf.newaxis]
+test_images = test_images[..., tf.newaxis]
+
+# Definindo a arquitetura da rede
+input_layer = Input(shape = (28, 28, 1))
+
+# Bloco residual
+residual = Conv2D(64, 1,
+                  strides = 2,
+                  padding = 'same')(input_layer)
+residual = BatchNormalization()(residual)
+
+x = Conv2D(64, 3,
+           strides = 2,
+           activation = 'relu',
+           padding = 'same')(input_layer)
+x = BatchNormalization()(x)
+x = Activation('relu')(x)
+
+x = Conv2D(64, 3,
+           activation = 'relu',
+           padding = 'same')(x)
+x = BatchNormalization()(x)
+x = layers.add([x, residual])
+x = Activation('relu')(x)
+
+# Mais um bloco residual
+residual = Conv2D(128, 1,
+                  strides = 2,
+                  padding = 'same')(x)
+residual = BatchNormalization()(residual)
+
+x = Conv2D(128, 3,
+           strides = 2,
+           activation = 'relu',
+           padding = 'same')(x)
+x = BatchNormalization()(x)
+x = Activation('relu')(x)
+
+x = Conv2D(128, 3,
+           activation = 'relu',
+           padding = 'same')(x)
+x = BatchNormalization()(x)
+x = layers.add([x, residual])
+x = Activation('relu')(x)
+
+# Bloco de saída
+x = Flatten()(x)
+output_layer = Dense(units = 10,
+                     activation = 'softmax')(x)
+
+# Criando o modelo
+model = Model(inputs = input_layer,
+              outputs = output_layer)
+
+# Compilando o modelo
+model.compile(optimizer = 'adam',
+              loss = 'sparse_categorical_crossentropy',
+              metrics = ['accuracy'])
+
+# Treinando o modelo
+model.fit(train_images,
+          train_labels,
+          steps_per_epoch = 100,
+          epochs = 20,
+          validation_data = (test_images,
+                             test_labels))
