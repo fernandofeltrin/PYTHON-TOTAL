@@ -1,0 +1,44 @@
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.models import Model
+from tensorflow.keras.layers import Dense, Flatten, Input
+from tensorflow.keras.applications.vgg16 import VGG16
+
+# Carregando a base de dados MNIST
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+
+# Pré-processamento dos dados
+x_train = tf.keras.utils.normalize(x_train, axis=1)
+x_test = tf.keras.utils.normalize(x_test, axis=1)
+
+# Redimensionando as imagens para o formato esperado pela VGG16
+x_train = tf.image.grayscale_to_rgb(tf.expand_dims(x_train, axis=-1))
+x_train = tf.image.resize(x_train, (48, 48))
+x_test = tf.image.grayscale_to_rgb(tf.expand_dims(x_test, axis=-1))
+x_test = tf.image.resize(x_test, (48, 48))
+
+# Carregando a VGG16 pré-treinada e removendo a camada de saída
+vgg = VGG16(include_top=False, input_shape=(48, 48, 3))
+vgg_output = vgg.layers[-1].output
+vgg_output = Flatten()(vgg_output)
+
+# Adicionando uma camada de saída personalizada para a base de dados MNIST
+output_layer = Dense(units=10, activation='softmax')(vgg_output)
+
+# Criando o modelo final
+model = Model(inputs=vgg.input, outputs=output_layer)
+
+# Congelando as camadas da VGG16 para evitar o re-treinamento
+for layer in vgg.layers:
+    layer.trainable = False
+
+# Compilando o modelo
+model.compile(loss='sparse_categorical_crossentropy',
+              optimizer='adam',
+              metrics=['accuracy'])
+
+# Treinando o modelo
+model.fit(x_train, y_train, epochs=5, validation_data=(x_test, y_test))
+
+
