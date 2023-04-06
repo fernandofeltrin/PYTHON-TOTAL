@@ -1,0 +1,91 @@
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.utils import to_categorical
+
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+
+x_train = x_train.astype('float32') / 255.0
+x_test = x_test.astype('float32') / 255.0
+x_train = np.expand_dims(x_train, axis = -1)
+x_test = np.expand_dims(x_test, axis = -1)
+
+y_train = to_categorical(y_train)
+y_test = to_categorical(y_test)
+
+model1 = tf.keras.models.Sequential([
+    tf.keras.layers.Conv2D(filters = 64,
+                           kernel_size = (3,3),
+                           activation = 'relu',
+                           input_shape = (28,28,1)),
+    tf.keras.layers.MaxPooling2D((2,2)),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(units = 64,
+                          activation = 'relu'),
+    tf.keras.layers.Dense(units = 10,
+                          activation = 'softmax')
+])
+model2 = tf.keras.models.Sequential([
+    tf.keras.layers.Conv2D(filters = 64,
+                           kernel_size = (3,3),
+                           activation = 'relu',
+                           input_shape = (28,28,1)),
+    tf.keras.layers.MaxPooling2D((2,2)),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(units = 64,
+                          activation = 'relu'),
+    tf.keras.layers.Dense(units = 10,
+                          activation = 'softmax')
+])
+
+model1.compile(optimizer = 'adam',
+               loss = 'categorical_crossentropy',
+               metrics = ['accuracy'])
+model2.compile(optimizer = 'adam',
+               loss = 'categorical_crossentropy',
+               metrics = ['accuracy'])
+
+model1.fit(x_train,
+           y_train,
+           epochs = 50,
+           batch_size = 64,
+           validation_data = (x_test,
+                              y_test))
+model2.fit(x_train,
+           y_train,
+           epochs = 50,
+           batch_size = 64,
+           validation_data = (x_test,
+                              y_test))
+
+weights1 = model1.get_weights()
+weights2 = model2.get_weights()
+
+weights3 = []
+for i in range(len(weights1)):
+    weights3.append((weights1[i] + weights2[i]) / 2)
+
+model3 = tf.keras.models.Sequential([
+    tf.keras.layers.Conv2D(filters = 64,
+                           kernel_size = (3,3),
+                           activation = 'relu',
+                           input_shape = (28,28,1)),
+    tf.keras.layers.MaxPooling2D((2,2)),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(units = 64,
+                          activation = 'relu'),
+    tf.keras.layers.Dense(units = 10,
+                          activation = 'softmax')
+])
+model3.set_weights(weights3)
+
+model3.compile(optimizer = 'adam',
+               loss = 'categorical_crossentropy',
+               metrics = ['accuracy'])
+
+model3.save('combined_model.h5')
+model3.save_weights('combined_model_weights.h5')
+
+loss, acc = model3.evaluate(x_test,
+                            y_test)
+print("Acurácia Final:", acc)
