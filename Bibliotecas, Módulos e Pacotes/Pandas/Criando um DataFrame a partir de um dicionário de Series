@@ -1,0 +1,9 @@
+data = {
+    'A': pd.Series([1, 4, 7]),
+    'B': pd.Series([2, 5, 8]),
+    'C': pd.Series([3, 6, 9])
+}
+
+df = pd.DataFrame(data)
+
+print(df)
