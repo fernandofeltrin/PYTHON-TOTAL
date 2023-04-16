@@ -1,0 +1,34 @@
+import pandas as pd
+
+data = {
+  'Nome': ['Alice', 'Bárbara', 'Carlos', 'Davi', 'Maria', 'Tânia', 'Eder', 'Fernando'],
+  'Idade': [30, 33, 17, 35, 28, 60, 59, 35],
+  'Gênero': ['Mulher', 'Mulher', 'Homem', 'Homem', 'Mulher', 'Mulher', 'Homem', 'Homem'],
+  'Profissão': ['Médica', 'Médica', 'Estudante', 'Professor', 'Advogada', 'Aposentada', 'Empresário', 'Estudante'],
+  'Salário': [32000, 25000, 1300, 5000, 10000, 6000, 10000, 7000]
+}
+
+df = pd.DataFrame(data)
+
+print("DataFrame original:")
+print(df)
+
+cell_value = df.loc[3, 'Nome']
+
+print("\nCélula na linha com índice 3 e coluna 'Nome':")
+print(cell_value)
+
+cell_value = df.iloc[3, 0]
+
+print("\nCélula na linha com índice 3 e coluna com índice 0 ('Nome'):")
+print(cell_value)
+
+cell_value = df.at[3, 'Nome']
+
+print("\nCélula na linha com índice 3 e coluna 'Nome' (usando at[]):")
+print(cell_value)
+
+cell_value = df.iat[3, 0]
+
+print("\nCélula na linha com índice 3 e coluna com índice 0 ('Nome') (usando iat[]):")
+print(cell_value)
