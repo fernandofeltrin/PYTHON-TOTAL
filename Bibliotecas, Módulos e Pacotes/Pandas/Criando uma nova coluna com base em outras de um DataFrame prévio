@@ -1,0 +1,33 @@
+import pandas as pd
+
+data = {
+  'Nome': ['Alice', 'Bárbara', 'Carlos', 'Davi', 'Maria', 'Tânia', 'Eder', 'Fernando'],
+  'Idade': [30, 33, 17, 35, 28, 60, 59, 35],
+  'Gênero': ['Mulher', 'Mulher', 'Homem', 'Homem', 'Mulher', 'Mulher', 'Homem', 'Homem'],
+  'Profissão': ['Médica', 'Médica', 'Estudante', 'Professor', 'Advogada', 'Aposentada', 'Empresário', 'Estudante'],
+  'Salário': [32000, 25000, 1300, 5000, 10000, 6000, 10000, 7000]
+}
+
+df = pd.DataFrame(data)
+
+df['Cidadania'] = 'BR'
+
+print("\nDataFrame com a coluna 'Cidadania' adicionada:")
+print(df)
+
+df['de Maior'] = ''
+def de_maior(idade):
+    if idade >= 18:
+        return 'Maior de Idade'
+    else:
+        return 'Menor de Idade'
+
+df['de Maior'] = df['Idade'].apply(de_maior)
+
+print("\nDataFrame com a coluna 'de Maior' adicionada:")
+print(df)
+
+df['Resumo'] = df['Nome'] + ', ' + df['Idade'].astype(str) + ' anos ' + ', ' + df['Gênero'] + ', ' + df['de Maior']
+
+print("\nDataFrame com a coluna 'Resumo' adicionada:")
+print(df)
