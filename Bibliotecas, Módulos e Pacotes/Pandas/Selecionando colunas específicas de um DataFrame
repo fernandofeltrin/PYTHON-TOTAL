@@ -1,0 +1,40 @@
+import pandas as pd
+
+data = {
+  'Nome': ['Alice', 'Bárbara', 'Carlos', 'Davi', 'Maria', 'Tânia', 'Eder', 'Fernando'],
+  'Idade': [30, 33, 17, 35, 28, 60, 59, 35],
+  'Gênero': ['Mulher', 'Mulher', 'Homem', 'Homem', 'Mulher', 'Mulher', 'Homem', 'Homem'],
+  'Profissão': ['Médica', 'Médica', 'Estudante', 'Professor', 'Advogada', 'Aposentada', 'Empresário', 'Estudante'],
+  'Salário': [32000, 25000, 1300, 5000, 10000, 6000, 10000, 7000]
+}
+
+df = pd.DataFrame(data)
+
+print("DataFrame original:")
+print(df)
+
+col_nome = df['Nome']
+
+print("\nColuna 'Nome':")
+print(col_nome)
+
+selecao_col = df[['Nome', 'Idade']]
+
+print("\nColunas 'Nome' e 'Idade':")
+print(selecao_col)
+
+col_nome = df.Nome
+
+print("\nColuna 'Nome' (usando notação de atributo):")
+print(col_nome)
+
+selecao_col = df.loc[:, ['Nome', 'Idade']]
+
+print("\nColunas 'Nome' e 'Idade' (usando loc[]):")
+print(selecao_col)
+
+selecao_col = df.iloc[:, 0:2]
+
+print("\nColunas 'Nome' e 'Idade' (usando iloc[]):")
+print(selecao_col)
+
