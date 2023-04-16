@@ -1,0 +1,19 @@
+!pip install -q dataprep
+from dataprep.eda import create_report, plot
+import pandas as pd
+
+data = {
+  'Nome': ['Alice', 'Bárbara', 'Carlos', 'Davi', 'Maria', 'Tânia', 'Eder', 'Fernando'],
+  'Idade': [30, 33, 17, 35, 28, 60, 59, 35],
+  'Gênero': ['Mulher', 'Mulher', 'Homem', 'Homem', 'Mulher', 'Mulher', 'Homem', 'Homem'],
+  'Profissão': ['Médica', 'Médica', 'Estudante', 'Professor', 'Advogada', 'Aposentada', 'Empresário', 'Estudante'],
+  'Salário': [31000, 25000, 1300, 5000, 40000, 6000, 10000, 7000]
+}
+
+df = pd.DataFrame(data)
+
+create_report(df)
+
+plot(df, 'Idade', 'Salário')
+plot(df, 'Gênero', 'Salário')
+plot(df, 'Profissão', 'Salário')
