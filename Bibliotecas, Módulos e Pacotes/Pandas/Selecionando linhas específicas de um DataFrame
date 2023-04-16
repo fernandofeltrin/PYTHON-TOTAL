@@ -1,0 +1,41 @@
+import pandas as pd
+
+data = {
+  'Nome': ['Alice', 'Bárbara', 'Carlos', 'Davi', 'Maria', 'Tânia', 'Eder', 'Fernando'],
+  'Idade': [30, 33, 17, 35, 28, 60, 59, 35],
+  'Gênero': ['Mulher', 'Mulher', 'Homem', 'Homem', 'Mulher', 'Mulher', 'Homem', 'Homem'],
+  'Profissão': ['Médica', 'Médica', 'Estudante', 'Professor', 'Advogada', 'Aposentada', 'Empresário', 'Estudante'],
+  'Salário': [32000, 25000, 1300, 5000, 10000, 6000, 10000, 7000]
+}
+
+df = pd.DataFrame(data)
+
+linha_1 = df.loc[1]
+
+print("\nLinha com índice 1:")
+print(linha_1)
+
+linhas_selecionadas = df.loc[[1, 3]]
+
+print("\nLinhas com índices 1 e 3:")
+print(linhas_selecionadas)
+
+linha_1 = df.iloc[1]
+
+print("\nLinha com índice 1 (usando iloc[]):")
+print(linha_1)
+
+linhas_selecionadas = df.iloc[[1, 3]]
+
+print("\nLinhas com índices 1 e 3 (usando iloc[]):")
+print(linhas_selecionadas)
+
+linhas_selecionadas = df.iloc[1:3]
+
+print("\nLinhas com índices de 1 a 3 (usando iloc[]):")
+print(linhas_selecionadas)
+
+linhas_selecionadas = df[df['Idade'] > 25]
+
+print("\nLinhas onde a coluna 'Idade' é maior que 25:")
+print(linhas_selecionadas)
