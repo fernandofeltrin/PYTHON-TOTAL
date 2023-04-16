@@ -1,0 +1,32 @@
+import pandas as pd
+
+data = {
+  'Nome': ['Alice', 'Bárbara', 'Carlos', 'Davi', 'Maria', 'Tânia', 'Eder', 'Fernando'],
+  'Idade': [30, 33, 17, 35, 28, 60, 59, 35],
+  'Gênero': ['Mulher', 'Mulher', 'Homem', 'Homem', 'Mulher', 'Mulher', 'Homem', 'Homem'],
+  'Profissão': ['Médica', 'Médica', 'Estudante', 'Professor', 'Advogada', 'Aposentada', 'Empresário', 'Estudante'],
+  'Salário': [32000, 25000, 1300, 5000, 10000, 6000, 10000, 7000]
+}
+
+df = pd.DataFrame(data)
+
+print("DataFrame original:")
+print(df)
+
+caixas = [0, 18, 35, 65]
+rotulos = ['0-18', '19-35', '36-65']
+
+df['Faixa Etária'] = pd.cut(df['Idade'],
+                            bins = caixas,
+                            labels = rotulos)
+
+print("\nDataframe com uma nova coluna de idades em faixas-etárias:")
+print(df)
+
+pivot_table = df.pivot_table(index = 'Gênero',
+                             columns = 'Faixa Etária',
+                             values = 'Nome',
+                             aggfunc = 'count')
+
+print("\nTabela Dinâmica classificando as pessoas em sua faixa-etária com base em seu gênero:")
+print(pivot_table)
