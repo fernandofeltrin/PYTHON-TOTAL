@@ -1,0 +1,26 @@
+import pandas as pd
+
+data = {
+  'Nome': ['Alice', 'Bárbara', 'Carlos', 'Davi', 'Maria', 'Tânia', 'Eder', 'Fernando'],
+  'Idade': [30, 33, 17, 35, 28, 60, 59, 35],
+  'Gênero': ['Mulher', 'Mulher', 'Homem', 'Homem', 'Mulher', 'Mulher', 'Homem', 'Homem'],
+  'Profissão': ['Médica', 'Médica', 'Estudante', 'Professor', 'Advogada', 'Aposentada', 'Empresário', 'Estudante'],
+  'Salário': [32000, 25000, 1300, 5000, 10000, 6000, 10000, 7000]
+}
+
+df = pd.DataFrame(data)
+
+print("DataFrame original:")
+print(df)
+
+df_por_idade = df.sort_values(by = 'Idade',
+                           ascending = False)
+
+print("\nDataframe classificado por idade em ordem decrescente:")
+print(df_por_idade)
+
+df_p_gen_e_nome = df.sort_values(by = ['Gênero', 'Nome'],
+                                    ascending = [True, True]) 
+
+print("\nDataframe classificado por gênero e por nome em ordem alfabética:")
+print(df_p_gen_e_nome)
