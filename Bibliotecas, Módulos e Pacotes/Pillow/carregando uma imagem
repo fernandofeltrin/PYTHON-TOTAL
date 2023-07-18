@@ -1,0 +1,5 @@
+from PIL import Image
+
+imagem = Image.open('Imagens\cachorro.jpg')
+
+imagem.show()
