@@ -1,0 +1,9 @@
+from PIL import Image
+
+imagem = Image.open('Imagens\cachorro.jpg')
+
+imagem_cinza = imagem.transpose(Image.FLIP_LEFT_RIGHT)
+
+imagem_cinza.show()
+
+
