@@ -1,0 +1,8 @@
+from PIL import Image
+
+imagem = Image.open('Imagens\cachorro.jpg')
+
+imagem_ajustada = imagem.point(lambda p: p * 1.5)
+
+imagem_ajustada.show()
+
