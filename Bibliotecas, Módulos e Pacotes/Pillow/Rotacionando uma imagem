@@ -1,0 +1,17 @@
+from PIL import Image
+
+imagem = Image.open('Imagens\cachorro.jpg')
+
+imagem_ajustada = imagem.point(lambda p: p * 1.0)
+
+imagem_rotacionada = imagem_ajustada.rotate(angle = 15)
+
+imagem_recortada = imagem_rotacionada.crop((100, 50, 100 + 400, 100 + 200))
+
+x = int(imagem_recortada.width * 1.5)
+y = int(imagem_recortada.height * 1.5)
+
+imagem_final = imagem_recortada.resize((x, y))
+
+imagem_final.show()
+
