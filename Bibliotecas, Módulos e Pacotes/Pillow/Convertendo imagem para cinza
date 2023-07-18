@@ -1,0 +1,7 @@
+from PIL import Image
+
+imagem = Image.open('Imagens\cachorro.jpg')
+
+imagem_cinza = imagem.convert('L')
+
+imagem_cinza.show()
