@@ -1,0 +1,22 @@
+def busca(base, nome):
+    inicio = 0
+    fim = len(base) - 1
+
+    while inicio <= fim:
+        metade = (inicio + fim) // 2
+
+        if base[metade].lower() == nome:
+            print(f'{nome} consta na lista de funcionários. Posição {metade}')
+            break
+        elif base[metade].lower() < nome:
+            inicio = metade + 1
+        else:
+            fim = metade - 1
+            
+lista_funcionarios = ['Augusto', 'Carla', 'Carine', 'Daniel', 'Fernando',
+                      'Gislaine', 'Maria', 'Nívea', 'Paulo', 'Viviane']
+
+nome = input('Digite o nome a ser consultado: ').lower()
+
+consulta = busca(lista_funcionarios, nome)
+
