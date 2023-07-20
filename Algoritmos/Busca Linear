@@ -1,0 +1,14 @@
+def busca(base, nome):
+    for i in range(len(base)):
+        if base[i].lower() == nome:
+            print(f'{nome} consta na lista de funcionários. Posição {i}')
+        else:
+            pass
+            
+lista_funcionarios = ['Augusto', 'Carla', 'Carine', 'Daniel', 'Fernando',
+                      'Gislaine', 'Maria', 'Nívea', 'Paulo', 'Viviane']
+
+nome = input('Digite o nome a ser consultado: ').lower()
+
+consulta = busca(lista_funcionarios, nome)
+
