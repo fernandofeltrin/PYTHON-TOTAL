@@ -1,3 +1,4 @@
+
 class Node:
     def __init__(self, nome):
         self.nome = nome
@@ -30,12 +31,13 @@ def busca(base, nome):
     for i in base:
         raiz = insere(raiz, i.lower())
 
-    resultado = busca_arvore(raiz, nome)
+    resultado = busca_arvore(raiz, nome.lower())
 
     if resultado:
-        print(f'{nome} consta na lista de funcionários. Posição {base.index(i)}')
+        indice = base.index(resultado.nome.capitalize())
+        print(f'{nome.capitalize()} consta na lista de funcionários. Posição {indice}')
     else:
-        pass
+        print(f'{nome.capitalize()} não consta na lista de funcionários.')
     
 lista_funcionarios = ['Augusto', 'Carla', 'Carine', 'Daniel', 'Fernando',
                       'Gislaine', 'Maria', 'Nívea', 'Paulo', 'Viviane']
@@ -43,5 +45,4 @@ lista_funcionarios = ['Augusto', 'Carla', 'Carine', 'Daniel', 'Fernando',
 nome = input('Digite o nome a ser consultado: ').lower()
 
 consulta = busca(lista_funcionarios, nome)
-
 
