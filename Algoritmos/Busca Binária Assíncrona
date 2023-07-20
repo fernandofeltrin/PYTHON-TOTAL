@@ -1,0 +1,29 @@
+import asyncio
+
+async def busca(base, nome, inicio, fim):
+    inicio = 0
+    fim = len(base) - 1
+
+    while inicio <= fim:
+        metade = (inicio + fim) // 2
+
+        if base[metade].lower() == nome:
+            print(f'{nome} consta na lista de funcionários. Posição {metade}')
+            break
+        elif base[metade].lower() < nome:
+            inicio = metade + 1
+        else:
+            fim = metade - 1
+
+async def busca_assincrona(base, nome):
+    tarefa = asyncio.create_task(busca(base, nome, 0, len(base) - 1))
+    indice = await tarefa
+    return indice
+
+lista_funcionarios = ['Augusto', 'Carla', 'Carine', 'Daniel', 'Fernando',
+                      'Gislaine', 'Maria', 'Nívea', 'Paulo', 'Viviane']
+
+nome = input('Digite o nome a ser consultado: ').lower()
+
+resultado = asyncio.run(busca_assincrona(lista_funcionarios, nome))
+
