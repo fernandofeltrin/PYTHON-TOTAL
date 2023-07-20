@@ -1,0 +1,47 @@
+class Node:
+    def __init__(self, nome):
+        self.nome = nome
+        self.esq = None
+        self.dir = None
+
+def insere(raiz, nome):
+    if raiz is None:
+        return Node(nome)
+    
+    if nome < raiz.nome:
+        raiz.esq = insere(raiz.esq, nome)
+    else:
+        raiz.dir = insere(raiz.dir, nome)
+    
+    return raiz
+
+def busca_arvore(raiz, nome):
+    if raiz is None or raiz.nome == nome:
+        return raiz
+    
+    if nome < raiz.nome:
+        return busca_arvore(raiz.esq, nome)
+    
+    return busca_arvore(raiz.dir, nome)
+
+def busca(base, nome):
+    raiz = None
+
+    for i in base:
+        raiz = insere(raiz, i.lower())
+
+    resultado = busca_arvore(raiz, nome)
+
+    if resultado:
+        print(f'{nome} consta na lista de funcionários. Posição {base.index(i)}')
+    else:
+        pass
+    
+lista_funcionarios = ['Augusto', 'Carla', 'Carine', 'Daniel', 'Fernando',
+                      'Gislaine', 'Maria', 'Nívea', 'Paulo', 'Viviane']
+
+nome = input('Digite o nome a ser consultado: ').lower()
+
+consulta = busca(lista_funcionarios, nome)
+
+
