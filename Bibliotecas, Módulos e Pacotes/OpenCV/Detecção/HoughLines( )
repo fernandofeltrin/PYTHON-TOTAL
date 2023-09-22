@@ -1,0 +1,36 @@
+img = cv2.imread('/content/drive/MyDrive/corredor2.jpg')
+
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+edges = cv2.Canny(gray, 50, 100, apertureSize=7)
+
+lines = cv2.HoughLines(edges, 1, np.pi / 180, 200)
+
+img_lines = img.copy()
+
+if lines is not None:
+    for rho, theta in lines[:, 0]:
+        a = np.cos(theta)
+        b = np.sin(theta)
+        x0 = a * rho
+        y0 = b * rho
+        x1 = int(x0 + 1000 * (-b))
+        y1 = int(y0 + 1000 * (a))
+        x2 = int(x0 - 1000 * (-b))
+        y2 = int(y0 - 1000 * (a))
+        cv2.line(img_lines, (x1, y1), (x2, y2), (0, 0, 255), 2)  # Desenha as linhas em vermelho
+
+plt.figure(figsize=(8, 4))
+
+plt.subplot(1, 2, 1)
+plt.title('Imagem Original')
+plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+plt.axis('off')
+
+plt.subplot(1, 2, 2)
+plt.title('Imagem com Linhas Detectadas')
+plt.imshow(cv2.cvtColor(img_lines, cv2.COLOR_BGR2RGB))
+plt.axis('off')
+
+plt.tight_layout()
+plt.show()
