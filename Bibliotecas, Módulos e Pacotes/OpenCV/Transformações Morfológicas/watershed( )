@@ -1,0 +1,31 @@
+img = cv2.imread('/content/drive/MyDrive/cafe.jpg', cv2.IMREAD_GRAYSCALE)
+
+_, limiar = cv2.threshold(img, 200, 255, cv2.THRESH_BINARY)
+
+marcadores = cv2.connectedComponents(limiar)[1]
+
+marcadores = cv2.watershed(cv2.cvtColor(img, cv2.COLOR_GRAY2BGR), marcadores)
+
+colors = np.random.randint(0, 255, (100, 3))
+
+img_copy = np.copy(img)
+if marcadores.min() != -1:
+    marcadores = marcadores + 1
+    for i in range(0, marcadores.max()):
+        img_copy[marcadores == i] = colors[i]
+
+plt.figure(figsize=(8, 4))
+
+plt.subplot(1, 2, 1)
+plt.title('Original')
+plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+plt.axis('off')
+
+plt.subplot(1, 2, 2)
+plt.title('Watershed')
+plt.imshow(marcadores)
+plt.axis('off')
+
+plt.tight_layout()
+plt.show()
+
