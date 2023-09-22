@@ -1,0 +1,25 @@
+img = cv2.imread('/content/drive/MyDrive/filhote.jpg')
+
+hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
+min = np.array([20, 60, 60])
+max = np.array([90, 255, 255])
+
+mascara = cv2.inRange(hsv, min, max)
+
+img_seg = cv2.bitwise_and(img, img, mask = mascara)
+
+plt.figure(figsize=(8, 4))
+
+plt.subplot(1, 2, 1)
+plt.title('Imagem Original')
+plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+plt.axis('off')
+
+plt.subplot(1, 2, 2)
+plt.title('Imagem Segmentada')
+plt.imshow(cv2.cvtColor(img_seg, cv2.COLOR_BGR2RGB))
+plt.axis('off')
+
+plt.tight_layout()
+plt.show()
