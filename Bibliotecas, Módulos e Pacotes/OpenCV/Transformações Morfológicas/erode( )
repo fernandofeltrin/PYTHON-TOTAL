@@ -1,9 +1,12 @@
 img = cv2.imread('/content/drive/MyDrive/cafe.jpg')
 
-kernel = np.ones((5,5), np.uint8)
+kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
 
 erosao = cv2.erode(img,
-                   kernel)
+                   kernel=kernel,
+                   iterations=1,
+                   borderType=cv2.BORDER_REFLECT,
+                   borderValue=255)
 
 plt.figure(figsize=(8, 4))
 
