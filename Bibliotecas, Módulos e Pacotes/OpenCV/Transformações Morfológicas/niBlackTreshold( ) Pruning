@@ -1,0 +1,24 @@
+img = cv2.imread('/content/drive/MyDrive/cafe.jpg', cv2.IMREAD_GRAYSCALE)
+
+pruned = cv2.ximgproc.niBlackThreshold(img,
+                                       maxValue = 255,
+                                       type = cv2.THRESH_BINARY,
+                                       blockSize = 15,
+                                       k = 0.6,
+                                       binarizationMethod = cv2.ximgproc.BINARIZATION_NIBLACK)
+
+plt.figure(figsize=(8, 4))
+
+plt.subplot(1, 2, 1)
+plt.title('Original')
+plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+plt.axis('off')
+
+plt.subplot(1, 2, 2)
+plt.title('Pruning')
+plt.imshow(cv2.cvtColor(pruned, cv2.COLOR_BGR2RGB))
+plt.axis('off')
+
+plt.tight_layout()
+plt.show()
+
