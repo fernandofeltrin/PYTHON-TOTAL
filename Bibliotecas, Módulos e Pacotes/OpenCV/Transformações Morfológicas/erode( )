@@ -1,0 +1,21 @@
+img = cv2.imread('/content/drive/MyDrive/cafe.jpg')
+
+kernel = np.ones((5,5), np.uint8)
+
+erosao = cv2.erode(img,
+                   kernel)
+
+plt.figure(figsize=(8, 4))
+
+plt.subplot(1, 2, 1)
+plt.title('Imagem Original')
+plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+plt.axis('off')
+
+plt.subplot(1, 2, 2)
+plt.title('Imagem Erodida')
+plt.imshow(cv2.cvtColor(erosao, cv2.COLOR_BGR2RGB))
+plt.axis('off')
+
+plt.tight_layout()
+plt.show()
