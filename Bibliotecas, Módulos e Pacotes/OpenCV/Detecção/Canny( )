@@ -1,0 +1,32 @@
+img = cv2.imread('/content/drive/MyDrive/placa.jpg')
+
+bordas = cv2.Canny(img,
+                   threshold1 = 100,
+                   threshold2 = 200)
+
+plt.figure(figsize=(8, 4))
+
+plt.subplot(2, 2, 1)
+plt.title('Original')
+plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+plt.axis('off')
+
+plt.subplot(2, 2, 2)
+plt.title('Apenas contornos (Canny)')
+plt.imshow(bordas)
+plt.axis('off')
+
+plt.subplot(2, 2, 3)
+plt.title('Imagem final')
+resultado = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+resultado[bordas != 0] = [255, 0, 0]
+plt.imshow(resultado)
+plt.axis('off')
+
+plt.subplot(2, 2, 4)
+plt.title('Bordas em Escala de Cinza')
+plt.imshow(bordas, cmap='gray')
+plt.axis('off')
+
+plt.tight_layout()
+plt.show()
