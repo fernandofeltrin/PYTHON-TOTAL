@@ -1,0 +1,20 @@
+img = cv2.imread('/content/drive/MyDrive/cafe.jpg', cv2.IMREAD_GRAYSCALE)
+
+skeleton = cv2.ximgproc.thinning(img,
+                                 thinningType=cv2.ximgproc.THINNING_ZHANGSUEN)
+
+plt.figure(figsize=(8, 4))
+
+plt.subplot(1, 2, 1)
+plt.title('Original')
+plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+plt.axis('off')
+
+plt.subplot(1, 2, 2)
+plt.title('Skeletonization')
+plt.imshow(cv2.cvtColor(skeleton, cv2.COLOR_BGR2RGB))
+plt.axis('off')
+
+plt.tight_layout()
+plt.show()
+
