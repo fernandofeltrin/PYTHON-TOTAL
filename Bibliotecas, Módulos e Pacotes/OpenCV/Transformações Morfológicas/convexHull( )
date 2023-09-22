@@ -1,0 +1,32 @@
+img = cv2.imread('/content/drive/MyDrive/cafe.jpg', cv2.IMREAD_GRAYSCALE)
+
+_, limiar = cv2.threshold(img, 200, 220,
+                          cv2.THRESH_BINARY)
+
+contornos, _ = cv2.findContours(limiar,
+                               cv2.RETR_EXTERNAL,
+                               cv2.CHAIN_APPROX_SIMPLE)
+
+img_chull = img.copy()
+
+for contorno in contornos:
+    hull = cv2.convexHull(contorno)
+
+    #cv2.drawContours(img, [contorno], 0, (0, 255, 0), 2)
+    cv2.drawContours(img_chull, [hull], 0, (0, 0, 255), 2)
+
+plt.figure(figsize=(8, 4))
+
+plt.subplot(1, 2, 1)
+plt.title('Original')
+plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+plt.axis('off')
+
+plt.subplot(1, 2, 2)
+plt.title('Convex Hull')
+plt.imshow(cv2.cvtColor(img_chull, cv2.COLOR_BGR2RGB))
+plt.axis('off')
+
+plt.tight_layout()
+plt.show()
+
