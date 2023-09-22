@@ -1,0 +1,31 @@
+img = cv2.imread('/content/drive/MyDrive/cafe.jpg')
+
+kernel1 = np.array([[0,0,1],
+                    [0,1,0],
+                    [0,0,0]], dtype=np.uint8)
+
+kernel2 = np.array([[1,0,0],
+                    [0,1,0],
+                    [0,0,0]], dtype=np.uint8)
+
+img_inv = cv2.bitwise_not(img)
+
+hitmiss_inv = cv2.morphologyEx(img_inv, cv2.MORPH_ERODE, kernel1)
+hitmiss_inv = cv2.morphologyEx(hitmiss_inv, cv2.MORPH_DILATE, kernel2)
+
+hitmiss = cv2.bitwise_not(hitmiss_inv)
+
+plt.figure(figsize=(8, 4))
+
+plt.subplot(1, 2, 1)
+plt.title('Original')
+plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+plt.axis('off')
+
+plt.subplot(1, 2, 2)
+plt.title('Hit or Miss')
+plt.imshow(cv2.cvtColor(hitmiss, cv2.COLOR_BGR2RGB))
+plt.axis('off')
+
+plt.tight_layout()
+plt.show()
