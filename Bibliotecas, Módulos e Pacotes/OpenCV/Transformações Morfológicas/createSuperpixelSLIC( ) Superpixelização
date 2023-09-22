@@ -1,0 +1,37 @@
+imagem = cv2.imread('/content/drive/MyDrive/cafe.jpg')
+
+imagem_lab = cv2.cvtColor(imagem, cv2.COLOR_BGR2LAB)
+
+slic = cv2.ximgproc.createSuperpixelSLIC(imagem_lab,
+                                         algorithm = cv2.ximgproc.SLIC,
+                                         region_size = 100,
+                                         ruler = 10.0)
+
+slic.iterate()
+
+labels = slic.getLabels()
+superpixelizada = slic.getLabelContourMask(thick_line=True)
+
+cores = np.random.randint(0, 255, (np.max(labels) + 1, 3))
+superpixel_colorida = cores[labels]
+
+superpixel_colorida = superpixel_colorida.astype(np.uint8) 
+
+resultado = cv2.addWeighted(imagem, 0.7,
+                            superpixel_colorida, 0.3,
+                            0)
+
+plt.figure(figsize=(8, 4))
+plt.subplot(121)
+plt.title('Imagem Original')
+plt.imshow(cv2.cvtColor(imagem, cv2.COLOR_BGR2RGB))
+plt.axis('off')
+
+plt.subplot(122)
+plt.title('Superpixelização')
+plt.imshow(cv2.cvtColor(resultado, cv2.COLOR_BGR2RGB))
+plt.axis('off')
+
+plt.tight_layout()
+plt.show()
+
