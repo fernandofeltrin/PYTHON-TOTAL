@@ -1,0 +1,23 @@
+face_cascade = cv2.CascadeClassifier('/content/drive/MyDrive/haarcascade_frontalface_default.xml')
+olhos_cascade = cv2.CascadeClassifier('/content/drive/MyDrive/haarcascade_eye.xml')
+
+imagem = cv2.imread('/content/drive/MyDrive/pessoas.jpg')
+
+imagem_cinza = cv2.cvtColor(imagem, cv2.COLOR_BGR2GRAY)
+
+faces = face_cascade.detectMultiScale(imagem_cinza,
+                                      scaleFactor = 1.06,
+                                      minNeighbors = 5,
+                                      minSize = (100, 100))
+
+for (x, y, w, h) in faces:
+    cv2.rectangle(imagem, (x, y), (x + w, y + h), (0, 255, 0), 2)
+    roi_gray = imagem_cinza[y:y + h, x:x + w]
+    roi_color = imagem[y:y + h, x:x + w]
+    
+    olhos = olhos_cascade.detectMultiScale(roi_gray)
+    
+    for (ex, ey, ew, eh) in olhos:
+        cv2.rectangle(roi_color, (ex, ey), (ex + ew, ey + eh), (255, 0, 0), 2)
+
+cv2_imshow(imagem)
