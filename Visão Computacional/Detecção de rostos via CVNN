@@ -1,0 +1,24 @@
+import cv2
+
+net = cv2.dnn.readNetFromCaffe('/content/drive/MyDrive/deploy.prototxt',
+                               '/content/drive/MyDrive/res10_300x300_ssd_iter_140000.caffemodel')
+
+imagem = cv2.imread('/content/drive/MyDrive/pessoas.jpg')
+
+largura = 300
+altura = 300
+imagem = cv2.resize(imagem, (largura, altura))
+
+blob = cv2.dnn.blobFromImage(imagem, 1.0, (largura, altura), (104, 117, 123))
+
+net.setInput(blob)
+detections = net.forward()
+
+for i in range(detections.shape[2]):
+    confidence = detections[0, 0, i, 2]
+    if confidence > 0.5:
+        box = detections[0, 0, i, 3:7] * np.array([largura, altura, largura, altura])
+        (x, y, w, h) = box.astype("int")
+        cv2.rectangle(imagem, (x, y), (w, h), (0, 255, 0), 2)
+
+cv2_imshow(imagem)
