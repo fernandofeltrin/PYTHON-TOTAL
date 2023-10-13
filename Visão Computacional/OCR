@@ -1,0 +1,53 @@
+!pip install Pillow==9.1.0 # necessário após atualização no módulo Pillow carregado pelo Colab
+!sudo apt install tesseract-ocr
+!pip install pytesseract
+!apt-get install tesseract-ocr-por
+!mkdir tessdata
+!wget -O ./tessdata/por.traineddata https://github.com/tesseract-ocr/tessdata/blob/main/por.traineddata?raw=true
+
+import pytesseract
+import numpy as np
+import cv2
+from google.colab.patches import cv2_imshow
+from pytesseract import Output
+
+config_tesseract = '--tessdata-dir tessdata'
+
+img = cv2.imread('/content/drive/MyDrive/trecho_biblia.jpg')
+
+rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+cv2_imshow(rgb)
+
+texto = pytesseract.image_to_string(rgb,
+                                    lang = 'por',
+                                    config = config_tesseract)
+
+resultado = pytesseract.image_to_data(rgb,
+                                      config = config_tesseract,
+                                      lang = 'por',
+                                      output_type = Output.DICT)
+
+def caixa_texto(resultado, img, cor = (255, 100, 0)):
+  x = resultado['left'][i]
+  y = resultado['top'][i]
+  w = resultado['width'][i]
+  h = resultado['height'][i]
+
+  cv2.rectangle(img, (x, y), (x + w, y + h), cor, 2)
+
+  return x, y, img
+
+img_copia = rgb.copy()
+
+for i in range(0, len(resultado['text'])):
+  margem_acc = int(resultado['conf'][i])
+  if margem_acc > 50:
+    x, y, img = caixa_texto(resultado, img_copia)
+    texto = resultado['text'][i]
+
+print(pytesseract.image_to_osd(img))
+print(resultado)
+
+print(texto)
+
+cv2_imshow(img_copia)
