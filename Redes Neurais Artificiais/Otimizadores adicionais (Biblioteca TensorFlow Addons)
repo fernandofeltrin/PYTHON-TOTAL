@@ -1,0 +1,26 @@
+from keras.models import Sequential
+from keras.layers import Dense, Flatten
+from keras.optimizers import SGD
+from tfa.optimizers import SWA
+from tfa.callbacks import AverageModelCheckpoint
+
+sgd = SGD(0.01)
+s_sgd = SWA(sgd)
+m_sgd_callback = AverageModelCheckpoint(update_weights = True)
+
+def model(m_sgd):
+    model = Sequential([
+        Flatten(),                         
+        Dense(64, activation = 'relu'),
+        Dense(64, activation = 'relu'),
+        Dense(10, activation = 'softmax')
+    ])
+    model.compile(optimizer = m_sgd,
+                    loss = 'categorical_crossentropy',
+                    metrics = ['accuracy'])
+    return model
+
+model = model(RMSProp(0.01))
+model.fit(mnist,
+          epochs = 5,
+          callbacks = [m_sgd_callback])
