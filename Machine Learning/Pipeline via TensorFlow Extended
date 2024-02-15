@@ -1,0 +1,44 @@
+import tensorflow as tf
+import tensorflow_transform as tft
+from tensorflow_extended.python.tft.components import *
+
+schema = tft.schema.Schema(
+    features = {
+        'sepal_length': tft.types.Float,
+        'sepal_width': tft.types.Float,
+        'petal_length': tft.types.Float,
+        'petal_width': tft.types.Float,
+    },
+    target = tft.types.Float,
+)
+
+dataset = tft.io.TFRecordDataset('iris.tfrecord', schema)
+
+normalizer = tft.statistics.Normalize(
+    mean = dataset.features.mean(),
+    variance = dataset.features.variance(),
+)
+
+dataset = dataset.map(normalizer)
+
+train, test = dataset.split(0.8)
+
+model = tft.models.LinearRegression(
+    num_features = len(dataset.features),
+    target_key = 'petal_width',
+    l1_regularization_strength = 0.01,
+    l2_regularization_strength = 0.001,
+    optimizer = 'Adam',
+    learning_rate = 0.001,
+    num_epochs = 100,
+    batch_size = 32,
+    loss_fn = 'MeanAbsoluteError',
+    metrics = ['Accuracy', 'MeanSquaredError'],
+    eval_step_interval = 5,
+    early_stopping_rounds = 10,
+    export_dir = 'iris_model',
+)
+
+model.train(train)
+
+eval = model.evaluate(test)
