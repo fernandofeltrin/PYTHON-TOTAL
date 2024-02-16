@@ -1,0 +1,43 @@
+import tensorflow as tf
+from keras.models import Sequential
+from keras.layers import Dense, Flatten
+
+model = Sequential([
+    Flatten(input_shape = (28, 28)),
+    Dense(128, activation = "relu"),
+    Dense(128, activation = "relu"),
+    Dense(10, activation = "softmax"),
+])
+
+model.compile(optimizer = "adam",
+              loss = "categorical_crossentropy",
+              metrics = ["accuracy"])
+
+model.fit(x_train,
+          y_train,
+          epochs=10)
+
+model.save("mnist.h5")
+model.save_weights("mnist_weights.h5")
+
+
+import tensorflow as tf
+from tensorflow.keras.models import load_model
+
+model_lite = load_model("mnist_model.h5")
+
+converter = tf.lite.TFLiteConverter.from_keras_model(model_lite)
+converter.convert()
+
+with open("mnist.tflite", "wb") as f:
+    f.write(converter.get_model())
+
+interpreter = tf.lite.Interpreter("mnist.tflite")
+
+image = tf.reshape(x_test[0], (1, 28, 28))
+interpreter.invoke([image])
+predictions = interpreter.get_output()
+
+print(f"Previsão: {predictions}")
+
+
