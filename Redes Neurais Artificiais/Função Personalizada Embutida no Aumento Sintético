@@ -1,0 +1,19 @@
+import cv2
+from keras.preprocessing.image import ImageDataGenerator
+
+def filtros(img):
+    img = cv2.bilateralFilter(img,
+                              d = 9,
+                              sigmaColor = 75,
+                              sigmaSpace = 75)  # Aplicar filtro de redução de ruído bilateral
+    return img
+
+datagen = ImageDataGenerator(
+    preprocessing_function = filtros,
+    zoom_range = 0.5,
+    rotation_range = 10,
+    width_shift_range = 0.2,
+    height_shift_range = 0.2,
+    horizontal_flip = True
+)
+
