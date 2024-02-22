@@ -1,0 +1,30 @@
+import numpy as np
+from sklearn.datasets import fetch_openml
+from sklearn.model_selection import train_test_split
+from imblearn.over_sampling import RandomOverSampler
+
+X = data["data"].values.astype(np.uint8)
+y = data["target"].values.astype(np.uint8)
+
+X_train, X_test, y_train, y_test = train_test_split(X, y,
+                                                    test_size = 0.2,
+                                                    random_state = 42)
+
+classes, valores = np.unique(y_train,
+                             return_counts = True)
+
+print(f'Classe: Nº de Amostras (Pré Over-sampling)')
+print(dict(zip(classes, valores)))
+
+ros = RandomOverSampler(random_state = 42)
+
+X_train_r, y_train_r = ros.fit_resample(X_train,
+                                        y_train)
+
+classes, valores = np.unique(y_train_r,
+                             return_counts = True)
+
+print(f'Classe: Nº de Amostras (Pós Over-sampling)')
+print(dict(zip(classes, valores)))
+
+
