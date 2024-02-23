@@ -1,0 +1,62 @@
+from keras.models import Model
+from keras.layers import Conv2D, Input, Dense, Flatten, MaxPooling2D
+
+e = Input(shape = (28, 28, 1))
+x1 = Conv2D(filters = 64,
+           kernel_size = (3, 3),
+           activation = 'relu')(e)
+x2 = MaxPooling2D((2, 2))(x1)
+x3 = Conv2D(filters = 64,
+           kernel_size = (3, 3),
+           activation = 'relu')(x2)
+x4 = MaxPooling2D((2, 2))(x3)
+x5 = Conv2D(filters = 64,
+           kernel_size = (3, 3),
+           activation = 'relu')(x4)
+x6 = Flatten()(x5)
+x7 = Dense(units = 64,
+          activation = 'relu')(x6)
+s = Dense(units = 10,
+          activation = 'softmax')(x7)
+
+model = Model(inputs = e,
+              outputs = s)
+
+###
+
+from keras.models import Model
+from keras.layers import Conv2D, Input, Dense, Flatten, MaxPooling2D
+
+class Modelo(Model):
+  def __init__(self):
+    super().__init__()
+    self.e = Input(shape = (28, 28, 1))
+    self.x1 = Conv2D(filters = 64,
+                     kernel_size = (3, 3),
+                     activation = 'relu')
+    self.x2 = MaxPooling2D((2, 2))
+    self.x3 = Conv2D(filters = 64,
+                     kernel_size = (3, 3),
+                     activation = 'relu')
+    self.x4 = MaxPooling2D((2, 2))
+    self.x5 = Conv2D(filters = 64,
+                     kernel_size = (3, 3),
+                     activation = 'relu')
+    self.x6 = Flatten()
+    self.x7 = Dense(units = 64,
+                    activation = 'relu')
+    self.s = Dense(units = 10,
+                   activation = 'softmax')
+  
+  def call(self, ent):
+    _e = self.e(ent)
+    _x1 = self.x1(_e) 
+    _x2 = self.x2(_x1)
+    _x3 = self.x3(_x2)
+    _x4 = self.x4(_x3)
+    _x5 = self.x5(_x4)
+    _x6 = self.x6(_x5)
+    _x7 = self.x7(_x6)
+    return self.s(_x7)
+    
+model = Modelo()
