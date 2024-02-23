@@ -1,0 +1,49 @@
+from keras.models import Model
+from keras.layers import Conv2D, Input, Dense, Flatten, MaxPooling2D
+
+class Modelo(Model):
+  def __init__(self):
+    super().__init__()
+    self.e = Input(shape = (28, 28, 1))
+    self.x1 = Conv2D(filters = 64,
+                     kernel_size = (3, 3),
+                     activation = 'relu')
+    self.x2 = MaxPooling2D((2, 2))
+    self.x3 = Conv2D(filters = 64,
+                     kernel_size = (3, 3),
+                     activation = 'relu')
+    self.x4 = MaxPooling2D((2, 2))
+    self.x5 = Conv2D(filters = 64,
+                     kernel_size = (3, 3),
+                     activation = 'relu')
+    self.x6 = Flatten()
+    self.x7 = Dense(units = 128,
+                    activation = 'relu')
+    self.x8 = Dense(units = 256,
+                    activation = 'relu')
+    self.x9 = Dense(units = 256,
+                    activation = 'relu')
+    self.x10 = Dense(units = 128,
+                    activation = 'relu')
+    self.s = Dense(units = 10,
+                   activation = 'softmax')
+  
+  def call(self, ent, training = True):
+    _e = self.e(ent)
+    _x = self.x1(_e) 
+    _x = self.x2(_x)
+    _x = self.x3(_x)
+    _x = self.x4(_x)
+    _x = self.x5(_x)
+    _x = self.x6(_x)
+    _x = self.x7(_x)
+    _x = self.x8(_x, training = training)
+    _x = self.x9(_x, training = training)
+    _x = self.x10(_x)
+    return self.s(_x)
+    
+model = Modelo()
+
+saidas = model(data_treino,
+               training = True)
+
