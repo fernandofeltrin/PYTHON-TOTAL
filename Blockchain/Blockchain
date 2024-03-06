@@ -1,0 +1,62 @@
+import hashlib
+import datetime
+
+class Bloco:
+    def __init__(self, indice, dados, hash_anterior=''):
+        self.indice = indice
+        self.timestamp = datetime.datetime.now()
+        self.dados = dados
+        self.hash_anterior = hash_anterior
+        self.hash = self.calcular_hash()
+
+    def calcular_hash(self):
+        texto_para_hash = f"{self.indice}{self.timestamp}{self.dados}{self.hash_anterior}"
+        return hashlib.sha256(texto_para_hash.encode()).hexdigest()
+
+class Blockchain:
+    def __init__(self):
+        self.chain = [self.criar_bloco_genesis()]
+
+    def criar_bloco_genesis(self):
+        return Bloco(0, "Bloco Genesis", "0")
+
+    def obter_ultimo_bloco(self):
+        return self.chain[-1]
+
+    def adicionar_bloco(self, dados):
+        indice = len(self.chain)
+        hash_anterior = self.obter_ultimo_bloco().hash
+        novo_bloco = Bloco(indice, dados, hash_anterior)
+        self.chain.append(novo_bloco)
+
+    def validar_cadeia(self):
+        for i in range(1, len(self.chain)):
+            bloco_atual = self.chain[i]
+            bloco_anterior = self.chain[i - 1]
+
+            if bloco_atual.hash != bloco_atual.calcular_hash():
+                return False
+
+            if bloco_atual.hash_anterior != bloco_anterior.hash:
+                return False
+        return True
+
+blockchain = Blockchain()
+
+blockchain.adicionar_bloco("Dados do Bloco 1")
+blockchain.adicionar_bloco("Dados do Bloco 2")
+blockchain.adicionar_bloco("Dados do Bloco 3")
+blockchain.adicionar_bloco("Dados do Bloco 4")
+
+for bloco in blockchain.chain:
+    print(f"Índice: {bloco.indice}, Hash: {bloco.hash}")
+
+if blockchain.validar_cadeia():
+    print("A cadeia é válida.")
+else:
+    print("A cadeia não é válida.")
+
+
+
+
+
