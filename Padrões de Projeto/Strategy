@@ -1,0 +1,68 @@
+from abc import ABC, abstractmethod
+
+class Operacao(ABC):
+    @abstractmethod
+    def executar(self, a, b):
+        pass
+
+class Soma(Operacao):
+    def executar(self, a, b):
+        return a + b
+
+class Subtracao(Operacao):
+    def executar(self, a, b):
+        return a - b
+
+class Multiplicacao(Operacao):
+    def executar(self, a, b):
+        return a * b
+
+class Divisao(Operacao):
+    def executar(self, a, b):
+        if b != 0:
+            return a / b
+        else:
+            raise ValueError('Não é possível dividir por zero')
+
+class Calculadora:
+    def __init__(self):
+        self.estrategia_operacao = None
+
+    def definir_estrategia(self, operacao):
+        if operacao == 'soma':
+            self.estrategia_operacao = Soma()
+        elif operacao == 'subtracao':
+            self.estrategia_operacao = Subtracao()
+        elif operacao == 'multiplicacao':
+            self.estrategia_operacao = Multiplicacao()
+        elif operacao == 'divisao':
+            self.estrategia_operacao = Divisao()
+        else:
+            raise ValueError('Operação não suportada')
+
+    def executar_operacao(self, a, b):
+        if self.estrategia_operacao is not None:
+            return self.estrategia_operacao.executar(a, b)
+        else:
+            raise ValueError('Nenhuma operação selecionada')
+
+calculadora = Calculadora()
+
+calculadora.definir_estrategia('soma')
+resultado_soma = calculadora.executar_operacao(5, 3)
+print(f"Soma: {resultado_soma}")
+
+calculadora.definir_estrategia('multiplicacao')
+resultado_multiplicacao = calculadora.executar_operacao(5, 3)
+print(f"Multiplicação: {resultado_multiplicacao}")
+
+
+
+
+
+
+
+
+
+
+
